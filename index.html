@@ -387,5 +387,107 @@
   });
 </script>
 
+<script>
+  // NAV TOGGLE
+  document.getElementById('navToggle').addEventListener('click', function() {
+    document.querySelector('.nav-menu').classList.toggle('active');
+  });
+
+  // LEAD FORM
+  const leadForm = document.getElementById("leadForm");
+  if (leadForm) {
+    leadForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = {
+        name: leadForm.name.value,
+        email: leadForm.email.value,
+        phone: leadForm.phone.value,
+        company: leadForm.company.value,
+        message: leadForm.message.value
+      };
+
+      try {
+        const res = await fetch("/.netlify/functions/lead", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(formData)
+        });
+
+        const data = await res.json();
+        alert(data.message || "Thanks! We'll be in touch.");
+        leadForm.reset();
+
+      } catch (err) {
+        console.error(err);
+        alert("Error submitting the form.");
+      }
+    });
+  }
+
+  // FAQ FORM
+  const faqForm = document.getElementById("faqForm");
+  if (faqForm) {
+    faqForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = {
+        name: faqForm.name.value,
+        email: faqForm.email.value,
+        question: faqForm.question.value
+      };
+
+      try {
+        const res = await fetch("/.netlify/functions/faq", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(formData)
+        });
+
+        const data = await res.json();
+        alert(data.message || "Thanks for your question!");
+        faqForm.reset();
+
+      } catch (err) {
+        console.error(err);
+        alert("Error submitting your question.");
+      }
+    });
+  }
+
+  // NEWSLETTER FORM
+  const newsletterForm = document.getElementById("newsletterForm");
+  if (newsletterForm) {
+    newsletterForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = newsletterForm.email.value;
+
+      try {
+        const res = await fetch("/.netlify/functions/newsletter", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ email })
+        });
+
+        const data = await res.json();
+        alert(data.message || "Thanks for subscribing!");
+        newsletterForm.reset();
+
+      } catch (err) {
+        console.error(err);
+        alert("Error subscribing to newsletter.");
+      }
+    });
+  }
+</script>
+
+
 </body>
 </html>
