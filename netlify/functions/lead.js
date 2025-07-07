@@ -1,7 +1,11 @@
-const sqlite3 = require("sqlite3").verbose();
-const path = require("path");
+import { createClient } from '@supabase/supabase-js';
 
-exports.handler = async (event) => {
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
+
+export async function handler(event) {
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
@@ -19,42 +23,35 @@ exports.handler = async (event) => {
     };
   }
 
-  const dbPath = path.resolve(__dirname, "../../newsletter.db");
-  const db = new sqlite3.Database(dbPath);
+  const { name, email, phone, company, message } = data;
 
-  return new Promise((resolve) => {
-    const stmt = db.prepare(`
-      INSERT INTO leads (name, email, phone, company, message)
-      VALUES (?, ?, ?, ?, ?)
-    `);
-
-    stmt.run(
-      data.name,
-      data.email,
-      data.phone,
-      data.company,
-      data.message,
-      (err) => {
-        if (err) {
-          console.error("DB Insert Error:", err);
-          db.close();
-          return resolve({
-            statusCode: 500,
-            body: JSON.stringify({
-              message: "Error saving your details. Please try again.",
-              error: err.message,
-            }),
-          });
-        }
-
-        db.close();
-        return resolve({
-          statusCode: 200,
-          body: JSON.stringify({
-            message: "We will get back to you soon :)",
-          }),
-        });
+  const { error } = await supabase
+    .from("leads")
+    .insert([
+      {
+        name,
+        email,
+        phone,
+        company,
+        message,
       }
-    );
-  });
-};
+    ]);
+
+  if (error) {
+    console.error("Supabase Insert Error:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: "Error saving your details. Please try again.",
+        error: error.message,
+      }),
+    };
+  }
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      message: "We will get back to you soon :)",
+    }),
+  };
+}
