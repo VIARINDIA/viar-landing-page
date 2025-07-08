@@ -1,11 +1,12 @@
-import { createClient } from '@supabase/supabase-js';
+const { createClient } = require('@supabase/supabase-js');
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-);
+// Hardcoded credentials (same as your newsletter.js file)
+const supabaseUrl = 'https://ypibornojdvnlqjfctyd.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwaWJvcm5vamR2bmxxamZjdHlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE4NzI0ODUsImV4cCI6MjA2NzQ0ODQ4NX0.PIcJg3FOg9aVKHEaRNjgt6SELqqi_AZTn4cxmw_fNF4';
 
-export async function handler(event) {
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
@@ -54,4 +55,4 @@ export async function handler(event) {
       message: "We will get back to you soon :)",
     }),
   };
-}
+};
