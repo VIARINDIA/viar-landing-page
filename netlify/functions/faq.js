@@ -1,11 +1,12 @@
-import { createClient } from '@supabase/supabase-js';
+const { createClient } = require('@supabase/supabase-js');
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-);
+// ✅ Replace these with your real Supabase URL and anon key
+const supabaseUrl = 'https://ypibornojdvnlqjfctyd.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // use your real key here
 
-export async function handler(event) {
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
@@ -52,4 +53,4 @@ export async function handler(event) {
       message: "Thanks for asking! We'll get back to you soon.",
     }),
   };
-}
+};
