@@ -752,3 +752,18 @@ h1, h2, h3, h4, h5, h6, p {
 .privacy-container ul li {
   margin-bottom: 10px;
 }
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.faq-answer.active {
+  max-height: 500px; /* adjust as needed */
+}
+
+.faq-question.active {
+  font-weight: bold;
+}
+
