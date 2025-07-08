@@ -1,3 +1,5 @@
+console.log("script.js loaded ✅");
+
 // Navbar shrink on scroll
 let lastScrollTop = 0;
 const navbar = document.getElementById("navbar");
