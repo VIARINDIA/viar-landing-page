@@ -1,12 +1,12 @@
-const { createClient } = require('@supabase/supabase-js');
+import { createClient } from '@supabase/supabase-js';
 
-// ✅ Replace these with your real Supabase URL and anon key
+// Replace these with your actual Supabase values:
 const supabaseUrl = 'https://ypibornojdvnlqjfctyd.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // use your real key here
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlwaWJvcm5vamR2bmxxamZjdHlkIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MTg3MjQ4NSwiZXhwIjoyMDY3NDQ4NDg1fQ.4VTANpnM9Gy_3cNhl52yprtQ9GdtYJ-MtJs8ywm3gLQ';
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-exports.handler = async (event) => {
+export async function handler(event) {
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
@@ -32,7 +32,7 @@ exports.handler = async (event) => {
       {
         name,
         email,
-        question
+        question,
       }
     ]);
 
@@ -50,7 +50,7 @@ exports.handler = async (event) => {
   return {
     statusCode: 200,
     body: JSON.stringify({
-      message: "Thanks for asking! We'll get back to you soon.",
+      message: " We'll get back to you soon.",
     }),
   };
-};
+}
